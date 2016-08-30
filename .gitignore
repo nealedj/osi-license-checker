@@ -1,2 +1,2 @@
 *.pyc
-checker/secret_key
+appengine/secret_key
