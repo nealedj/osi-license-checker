@@ -1,9 +1,6 @@
-from contextlib import closing
-import json
 import re
 import urllib2
 
-from .. import license_matcher
 from .base import BaseProcessor
 
 URL_DATA_PATTERN = re.compile(r'github.com\/([\w\-\_]+)\/([\w\-\_]+)')
@@ -33,33 +30,19 @@ class GitHubProcessor(BaseProcessor):
             license = self.get_license_from_setup_py(file_list['setup.py'])
 
         if 'LICENSE' in file_list and not license:
-            license = self.get_license_from_license(file_list['LICENSE'])
+            license = self.get_license_from_license_file(file_list['LICENSE'])
 
         return license
 
     def get_file_list(self):
         contents_url = CONTENTS_URL.format(self)
 
-        try:
-            with closing(urllib2.urlopen(contents_url)) as contents_file:
-                file_data = contents_file.read()
-        except urllib2.HTTPError:
-            return {}
-
-        contents = json.loads(file_data)
+        contents = self.get_file_data(contents_url, parse_json=True)
         return {f['name']: f['download_url'] for f in contents}
 
     def get_license_from_setup_py(self, download_url):
-        # TODO: move to base
-        with closing(urllib2.urlopen(download_url)) as setup_file:
-            file_data = setup_file.read()
+        file_data = self.get_file_data(download_url)
 
         pattern = r"License :: OSI Approved :: (\w*)"
         match = re.search(pattern, file_data)
         return match and match.groups()[0]
-
-    def get_license_from_license(self, download_url):
-        with closing(urllib2.urlopen(download_url)) as license_file:
-            file_data = license_file.read()
-
-        return license_matcher.match(file_data)

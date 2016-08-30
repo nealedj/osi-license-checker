@@ -1,7 +1,8 @@
 from . import processors
 
 PROCESSORS = {
-    'github': processors.GitHubProcessor
+    'github': processors.GitHubProcessor,
+    'pypi': processors.PyPiProcessor
 }
 
 
@@ -16,8 +17,15 @@ class Processor(object):
 
     def get_license(self):
         processor_cls = self.get_processor()
-        processor = processor_cls(self.url)
-        return {
-            'type': processor.name,
-            'license': processor.get_license()
+
+        data = {
+            'type': 'unknown',
+            'license': None
         }
+
+        if processor_cls:
+            processor = processor_cls(self.url)
+            data['type'] = processor.name
+            data['license'] = processor.get_license()
+
+        return data
