@@ -14,7 +14,7 @@ class MainHandler(webapp2.RequestHandler):
 
 routes = [
     RedirectRoute(
-        '/getlicense/<url:(.+)>',
+        '/check/<url:(.+)>',
         MainHandler,
         name='home',
         strict_slash=True
