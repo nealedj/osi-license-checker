@@ -16,8 +16,8 @@ class BaseProcessor(object):
         except urllib2.HTTPError:
             file_data = ''
 
-        if file_data and parse_json:
-            return json.loads(file_data)
+        if parse_json:
+            return json.loads(file_data) if file_data else {}
 
         return file_data
 

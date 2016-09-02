@@ -2,7 +2,8 @@ from . import processors
 
 PROCESSORS = {
     'github': processors.GitHubProcessor,
-    'pypi': processors.PyPiProcessor
+    'pypi': processors.PyPiProcessor,
+    'npm': processors.NpmProcessor
 }
 
 
