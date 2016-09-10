@@ -34,4 +34,14 @@ class NpmProcessor(BaseProcessor):
             parse_json=True
         )
 
-        return repo_info.get('license'), data_url
+        license = repo_info.get('license')
+
+        if not license:
+            licenses = repo_info.get('licenses')
+
+            if isinstance(licenses, basestring):
+                license = licenses
+            elif licenses:
+                license = licenses[0]['type']
+
+        return license, data_url
