@@ -22,7 +22,11 @@ from checker.processors import NpmProcessor
 package_json = json.load(sys.stdin)
 
 for name, version in package_json['dependencies'].items():
-    processor = NpmProcessor(repo=name, version=version)
+    if NpmProcessor.is_match(version):
+        # if the value is a direct link to the package
+        processor = NpmProcessor(version)
+    else:
+        processor = NpmProcessor(repo=name, version=version)
 
     license, _ = processor.get_license()
 
