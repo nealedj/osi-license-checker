@@ -3,7 +3,11 @@ import re
 from .. import license_matcher
 from .base import BaseProcessor
 
-URL_DATA_PATTERN = re.compile(r'(www.)?npm(js)?(.com)?\/(package\/)?([\w\-\_]+)')
+URL_DATA_PATTERN = re.compile(
+    r'(?:(?:http|https))?(?:\://)?'
+    '(?:www)?(?:registry)?\.+npm(?:js)?(?:\.(?:com|org))?\/'
+    '(?:package\/)?([\w\-\_]+)'
+)
 JSON_DATA_PATTERN = 'http://registry.npmjs.org/{0.repo}/{0.version}'
 
 
@@ -12,7 +16,7 @@ class NpmProcessor(BaseProcessor):
 
     def __init__(self, url=None, repo=None, version=None):
         self.url = url
-        self.repo = repo or self.extract_url_data()[4]
+        self.repo = repo or self.extract_url_data()[0]
         self.version = version or 'latest'
 
     def extract_url_data(self):
