@@ -3,7 +3,7 @@ import urllib2
 
 from .base import BaseProcessor
 
-URL_DATA_PATTERN = re.compile(r'github(.com)?\/([\w\-\_]+)\/([\w\-\_]+)')
+URL_DATA_PATTERN = re.compile(r'github(?:.com)?\/([\w\-\_]+)\/([\w\-\_]+)(?:\.git)?')
 CONTENTS_URL = 'https://api.github.com/repos/{0.username}/{0.repo}/contents'
 
 
@@ -12,11 +12,10 @@ class GitHubProcessor(BaseProcessor):
 
     def __init__(self, url):
         self.url = url
-        _, self.username, self.repo = self.extract_url_data()
+        self.username, self.repo = self.extract_url_data()
 
     def extract_url_data(self):
-        match = URL_DATA_PATTERN.match(self.url)
-        return match.groups()
+        return URL_DATA_PATTERN.search(self.url).groups()
 
     @classmethod
     def is_match(cls, url):
