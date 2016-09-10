@@ -30,13 +30,4 @@ class PyPiProcessor(BaseProcessor):
             parse_json=True
         )
 
-        classifiers = repo_info['info']['classifiers']
-
-        pattern = r"License :: OSI Approved :: ([\w\s]*)"
-        for classifier in classifiers:
-            match = re.search(pattern, classifier)
-            if match and match.groups():
-                return (
-                    match.groups()[0],
-                    'PyPi classifiers in {}'.format(data_url)
-                )
+        return repo_info['info'].get('license'), data_url
