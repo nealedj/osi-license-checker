@@ -27,3 +27,9 @@ Run `./setup.sh`
 Pipe your requirements file to the read_pypi_requirements script:
 
 `cat requirements.txt | python scripts/read_pypi_requirements.py`
+
+### Npm requirements
+
+Pipe your package.json file to the read_npm_package_json script:
+
+`cat package.json | python scripts/read_npm_package_json.py`
