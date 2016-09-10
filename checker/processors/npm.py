@@ -23,9 +23,10 @@ class NpmProcessor(BaseProcessor):
         return URL_DATA_PATTERN.match(url)
 
     def get_license(self):
+        data_url = JSON_DATA_PATTERN.format(self),
         repo_info = self.get_file_data(
-            JSON_DATA_PATTERN.format(self),
+            data_url,
             parse_json=True
         )
 
-        return repo_info.get('license')
+        return repo_info.get('license'), data_url

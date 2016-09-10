@@ -28,11 +28,13 @@ class GitHubProcessor(BaseProcessor):
         license = None
         if 'setup.py' in file_list:
             license = self.get_license_from_setup_py(file_list['setup.py'])
+            license_found_in = file_list['setup.py']
 
         if 'LICENSE' in file_list and not license:
             license = self.get_license_from_license_file(file_list['LICENSE'])
+            license_found_in = file_list['LICENSE']
 
-        return license
+        return license, license_found_in
 
     def get_file_list(self):
         contents_url = CONTENTS_URL.format(self)

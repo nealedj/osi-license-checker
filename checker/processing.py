@@ -21,12 +21,13 @@ class Processor(object):
 
         data = {
             'type': 'unknown',
-            'license': None
+            'license': None,
+            'license_found_in': None
         }
 
         if processor_cls:
             processor = processor_cls(self.url)
             data['type'] = processor.name
-            data['license'] = processor.get_license()
+            data['license'], data['license_found_in'] = processor.get_license()
 
         return data

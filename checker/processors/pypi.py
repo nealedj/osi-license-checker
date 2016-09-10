@@ -23,7 +23,12 @@ class PyPiProcessor(BaseProcessor):
         return URL_DATA_PATTERN.match(url)
 
     def get_license(self):
-        repo_info = self.get_file_data(JSON_DATA_PATTERN.format(self), parse_json=True)
+        data_url = JSON_DATA_PATTERN.format(self)
+
+        repo_info = self.get_file_data(
+            data_url,
+            parse_json=True
+        )
 
         classifiers = repo_info['info']['classifiers']
 
@@ -31,4 +36,7 @@ class PyPiProcessor(BaseProcessor):
         for classifier in classifiers:
             match = re.search(pattern, classifier)
             if match and match.groups():
-                return match.groups()[0]
+                return (
+                    match.groups()[0],
+                    'PyPi classifiers in {}'.format(data_url)
+                )
