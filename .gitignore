@@ -1,2 +1,3 @@
 *.pyc
 appengine/secret_key
+third_party/
