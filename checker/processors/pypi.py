@@ -3,7 +3,7 @@ import re
 from .. import license_matcher
 from .base import BaseProcessor
 
-URL_DATA_PATTERN = re.compile(r'(pypi.python.org\/)?pypi\/([\w\-\_]+)')
+URL_DATA_PATTERN = re.compile(r'(?:pypi.python.org\/)?pypi\/([\w\-\_]+)')
 JSON_DATA_PATTERN = 'http://pypi.python.org/pypi/{0.repo}/json'
 JSON_DATA_PATTERN_WITH_VERSION = 'http://pypi.python.org/pypi/{0.repo}/{0.version}/json'
 
@@ -13,7 +13,7 @@ class PyPiProcessor(BaseProcessor):
 
     def __init__(self, url=None, repo=None, version=None):
         self.url = url
-        self.repo = repo or self.extract_url_data()[1]
+        self.repo = repo or self.extract_url_data()[0]
         self.version = version
 
     def extract_url_data(self):
